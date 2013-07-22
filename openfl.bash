@@ -57,6 +57,11 @@ _openfl()
                 list=$(find . -maxdepth 1 -mindepth 1 -type d -printf ' %f') 
                 ;;
 
+            (clean|update|build|run|test|display)
+                list=$(find . -maxdepth 1 -mindepth 1 -type f \( -name "*.xml" -o -name "*.nmml" \) -printf ' %f')
+                list=${list:1}
+                ;;
+
             (*)
                 prev="${COMP_WORDS[COMP_CWORD - 2]}"
                 case "${prev}" in 
