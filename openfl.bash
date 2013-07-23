@@ -55,6 +55,7 @@ _openfl()
 
             (rebuild)
                 list=$(find . -maxdepth 1 -mindepth 1 -type d -printf ' %f') 
+                list=${list:1}
                 ;;
 
             (clean|update|build|run|test|display)
@@ -77,4 +78,4 @@ _openfl()
     return 0
 }
 
-complete -F _openfl openfl
+complete -o default -F _openfl openfl
