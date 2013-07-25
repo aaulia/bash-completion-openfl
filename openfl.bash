@@ -49,18 +49,29 @@ _openfl()
 
             (create)
                 local samples_path=$(haxelib path openfl-samples)
-                local sample_names=$(find ${samples_path%/*} -maxdepth 1 -mindepth 1 -type d -printf ' %f')
-                list="project extension ${sample_names}" 
+                local sample_names=$(find ${samples_path%/*} -maxdepth 1 -mindepth 1 -type d -printf " %f")
+                list="project extension ${sample_names:1}" 
                 ;;
 
             (rebuild)
-                list=$(find . -maxdepth 1 -mindepth 1 -type d -printf ' %f') 
-                list=${list:1}
+                list=""
+                if [[ ${curr} != "" ]]; then
+                    list=$(find . -maxdepth 1 -mindepth 1 -type d -name "${curr}*" ! -iname ".*" -printf " %f") 
+                fi
+                if [[ ${list} == "" ]]; then
+                    list=${platforms[@]}
+                else
+                    list=${list:1}
+                fi
                 ;;
 
             (clean|update|build|run|test|display)
-                list=$(find . -maxdepth 1 -mindepth 1 -type f \( -name "*.xml" -o -name "*.nmml" \) -printf ' %f')
-                list=${list:1}
+                list=$(find . -maxdepth 1 -mindepth 1 -type f \( -name "*.xml" -o -name "*.nmml" \) ! -iname ".*" -printf " %f")
+                if [[ ${list} != "" ]]; then
+                    list=${list:1}
+                else
+                    return 1
+                fi
                 ;;
 
             (*)
